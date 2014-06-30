@@ -2,3 +2,53 @@ $padding: 20px;
 body {
     padding: $padding;
 }
+video {
+  width: 614px;
+  height: 500px;
+}
+canvas {
+  width: 614px;
+  height: 450px;
+}
+
+.grayscale {
+  -webkit-filter: grayscale(1);
+  filter: grayscale(1);
+}
+.sepia {
+  -webkit-filter: sepia(1);
+  filter: sepia(1);
+}
+.saturate {
+  -webkit-filter: saturate(8);
+  filter: saturate(8);
+}
+.hue-rotate {
+  -webkit-filter: hue-rotate(90deg);
+  filter: hue-rotate(90deg);
+}
+.invert {
+  -webkit-filter: invert(.8);
+  filter: invert(.8);
+}
+.opacity {
+  -webkit-filter: opacity(.2);
+  filter: opacity(.2);
+}
+.brightness {
+  -webkit-filter: brightness(3);
+  filter: brightness(3);
+}
+.contrast {
+  -webkit-filter: contrast(4);
+  filter: contrast(4);
+}
+.blur {
+  -webkit-filter: blur(5px);
+  filter: blur(5px);
+}
+.drop-shadow {
+  -webkit-filter: drop-shadow(16px 16px 10px rgba(0,0,0,0.9));
+  filter: drop-shadow(16px 16px 10px rgba(0,0,0,0.9));
+}
+.normal {}

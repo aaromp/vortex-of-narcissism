@@ -2,3 +2,75 @@
 body {
   padding: 20px;
 }
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/aaronward\/Documents\/vortex-of-narcissism\/app\/styles\/main\.scss}line{font-family:\000035}}
+video {
+  width: 614px;
+  height: 500px;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/aaronward\/Documents\/vortex-of-narcissism\/app\/styles\/main\.scss}line{font-family:\000039}}
+canvas {
+  width: 614px;
+  height: 450px;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/aaronward\/Documents\/vortex-of-narcissism\/app\/styles\/main\.scss}line{font-family:\0000314}}
+.grayscale {
+  -webkit-filter: grayscale(1);
+  filter: grayscale(1);
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/aaronward\/Documents\/vortex-of-narcissism\/app\/styles\/main\.scss}line{font-family:\0000318}}
+.sepia {
+  -webkit-filter: sepia(1);
+  filter: sepia(1);
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/aaronward\/Documents\/vortex-of-narcissism\/app\/styles\/main\.scss}line{font-family:\0000322}}
+.saturate {
+  -webkit-filter: saturate(8);
+  filter: saturate(8);
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/aaronward\/Documents\/vortex-of-narcissism\/app\/styles\/main\.scss}line{font-family:\0000326}}
+.hue-rotate {
+  -webkit-filter: hue-rotate(90deg);
+  filter: hue-rotate(90deg);
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/aaronward\/Documents\/vortex-of-narcissism\/app\/styles\/main\.scss}line{font-family:\0000330}}
+.invert {
+  -webkit-filter: invert(0.8);
+  filter: invert(0.8);
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/aaronward\/Documents\/vortex-of-narcissism\/app\/styles\/main\.scss}line{font-family:\0000334}}
+.opacity {
+  -webkit-filter: opacity(0.2);
+  filter: opacity(0.2);
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/aaronward\/Documents\/vortex-of-narcissism\/app\/styles\/main\.scss}line{font-family:\0000338}}
+.brightness {
+  -webkit-filter: brightness(3);
+  filter: brightness(3);
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/aaronward\/Documents\/vortex-of-narcissism\/app\/styles\/main\.scss}line{font-family:\0000342}}
+.contrast {
+  -webkit-filter: contrast(4);
+  filter: contrast(4);
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/aaronward\/Documents\/vortex-of-narcissism\/app\/styles\/main\.scss}line{font-family:\0000346}}
+.blur {
+  -webkit-filter: blur(5px);
+  filter: blur(5px);
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/aaronward\/Documents\/vortex-of-narcissism\/app\/styles\/main\.scss}line{font-family:\0000350}}
+.drop-shadow {
+  -webkit-filter: drop-shadow(16px 16px 10px rgba(0, 0, 0, 0.9));
+  filter: drop-shadow(16px 16px 10px rgba(0, 0, 0, 0.9));
+}
