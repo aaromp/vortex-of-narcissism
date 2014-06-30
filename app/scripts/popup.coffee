@@ -14,6 +14,8 @@ readyStateCheckInterval = setInterval( ->
     width = window.innerWidth
     height = 0
     timer = 3
+
+    localMediaStream = null
     
     navigator.getMedia = navigator.getUserMedia ||
                          navigator.webkitGetUserMedia ||
@@ -25,6 +27,7 @@ readyStateCheckInterval = setInterval( ->
       audio: false
       ,
       (stream) ->
+        localMediaStream = stream
         if navigator.mozGetUserMedia
           video.mozSrcObject = stream
         else
@@ -50,6 +53,8 @@ readyStateCheckInterval = setInterval( ->
         doSetTimeout = (n) ->
           if n is 0
             countdown.innerText = 'click!'
+            video.pause()
+            localMediaStream.stop()
     
             document.getElementById('video').remove()
     
