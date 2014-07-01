@@ -15,6 +15,8 @@ readyStateCheckInterval = setInterval( ->
     height = 0
     timer = 3
 
+    port = chrome.extension.connect {name: 'test'}
+
     localMediaStream = null
     
     navigator.getMedia = navigator.getUserMedia ||
@@ -48,11 +50,16 @@ readyStateCheckInterval = setInterval( ->
         streaming = true
     , false)
     
+    restoreBrowserAction = ->
+      port.postMessage ''
     
     takepicture = ->
         doSetTimeout = (n) ->
-          if n is 0
+          if n < 0
             countdown.innerText = 'click!'
+            port.postMessage 'click!'
+            
+            setTimeout(restoreBrowserAction, 2000)
             video.pause()
             localMediaStream.stop()
     
@@ -66,6 +73,7 @@ readyStateCheckInterval = setInterval( ->
     
           setTimeout( ->
             countdown.innerText = n
+            port.postMessage("" + n)
             doSetTimeout n-1
           , 1000)
     
@@ -88,6 +96,11 @@ readyStateCheckInterval = setInterval( ->
           download.href = canvas.toDataURL('image/png')
           download.download = 'selfie.png'
       , false)
+
+    
+    
+    # port.onMessage.addListener (message) ->
+      # alert "message received #{message}"
     
 , 10)
   
