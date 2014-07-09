@@ -11,6 +11,15 @@ canvas {
   height: 450px;
 }
 
+@-webkit-keyframes spin { to { -webkit-transform: rotate(360deg); } }
+
+#spinner {
+  width: 515px;
+  height: 515px;
+  -webkit-animation: spin 1s infinite linear;
+  background-image: url(../spinner.gif)
+}
+
 .normal {}
 .grayscale {
   -webkit-filter: grayscale(1);
