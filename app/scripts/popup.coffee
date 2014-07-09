@@ -65,35 +65,49 @@ readyStateCheckInterval = setInterval( ->
       index = counter % styles.length
       if counter < 0 then index = styles.length - (Math.abs counter % styles.length)
       index
+
+    clearPopup = ->
+      document.getElementById('countdown').remove()
+      document.getElementById('previous').remove()
+      document.getElementById('next').remove()
+      document.getElementById('video').remove()
+
+    createSpinner = ->
+      spinner = document.createElement 'img'
+      spinner.setAttribute 'src', '../spinner.gif'
+      spinner.id = 'spinner'
+      document.body.appendChild spinner
     
     takepicture = ->
-        doSetTimeout = (n) ->
-          if n < 0
-            countdown.innerText = 'click!'
-            port.postMessage 'click!'
-            
-            setTimeout(restoreBrowserAction, 2000)
-            video.pause()
-            localMediaStream.stop()
+      doSetTimeout = (n) ->
+        if n < 0
+          countdown.innerText = 'click!'
+          port.postMessage 'click!'
+          
+          setTimeout(restoreBrowserAction, 2000)
+          video.pause()
+          localMediaStream.stop()
     
-            document.getElementById('video').remove()
-            canvas = document.createElement('canvas')
+          clearPopup()
+          createSpinner()
+
+          canvas = document.createElement('canvas')
     
-            canvas.width = width
-            canvas.height = height
-            canvas.getContext('2d').drawImage video, 0, 0, width, height
-            data = canvas.toDataURL 'image/png'
-            processPhotos data, styles[getIndex counter]
+          canvas.width = width
+          canvas.height = height
+          canvas.getContext('2d').drawImage video, 0, 0, width, height
+          data = canvas.toDataURL 'image/png'
+          processPhotos data, styles[getIndex counter]
     
-            return
+          return
     
-          setTimeout( ->
-            countdown.innerText = n
-            port.postMessage("" + n)
-            doSetTimeout n-1
-          , 1000)
+        setTimeout( ->
+          countdown.innerText = n
+          port.postMessage("" + n)
+          doSetTimeout n-1
+        , 1000)
     
-        doSetTimeout timer
+      doSetTimeout timer
 
     video.addEventListener('click', (ev) ->
       ev.preventDefault()
@@ -104,7 +118,6 @@ readyStateCheckInterval = setInterval( ->
       ev.preventDefault()
 
       counter--
-      
       video.className = styles[getIndex counter]
     , false)
 
@@ -112,7 +125,6 @@ readyStateCheckInterval = setInterval( ->
       ev.preventDefault()
 
       counter++
-
       video.className = styles[getIndex counter]
     , false)
     
