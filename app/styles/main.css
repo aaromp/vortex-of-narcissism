@@ -80,9 +80,3 @@ canvas {
   -webkit-filter: blur(5px);
   filter: blur(5px);
 }
-
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/aaronward\/Documents\/vortex-of-narcissism\/app\/styles\/main\.scss}line{font-family:\0000357}}
-.drop-shadow {
-  -webkit-filter: drop-shadow(16px 16px 10px rgba(0, 0, 0, 0.9));
-  filter: drop-shadow(16px 16px 10px rgba(0, 0, 0, 0.9));
-}

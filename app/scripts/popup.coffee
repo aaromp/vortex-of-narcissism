@@ -15,7 +15,7 @@ readyStateCheckInterval = setInterval( ->
     height = 0
     timer = 3
 
-    styles = ['normal', 'grayscale', 'sepia', 'saturate', 'hue-rotate', 'invert', 'opacity', 'brightness', 'contrast', 'blur', 'drop-shadow']
+    styles = ['normal', 'grayscale', 'sepia', 'saturate', 'hue-rotate', 'invert', 'opacity', 'brightness', 'contrast', 'blur']
     counter = 0
 
     port = chrome.extension.connect {name: 'test'}
@@ -77,41 +77,41 @@ readyStateCheckInterval = setInterval( ->
       spinner.setAttribute 'src', '../images/spinner.gif'
       spinner.id = 'spinner'
       document.body.appendChild spinner
-    
-    takepicture = ->
-      doSetTimeout = (n) ->
-        if n < 0
-          countdown.innerText = 'click!'
-          port.postMessage 'click!'
-          
-          setTimeout(restoreBrowserAction, 2000)
-          video.pause()
-          localMediaStream.stop()
-    
-          clearPopup()
-          createSpinner()
 
-          canvas = document.createElement('canvas')
+    snapPicture= ->
+      countdown.innerText = 'click!'
+      port.postMessage 'click!'
+      
+      setTimeout(restoreBrowserAction, 2000)
+      video.pause()
+      localMediaStream.stop()
     
-          canvas.width = width
-          canvas.height = height
-          canvas.getContext('2d').drawImage video, 0, 0, width, height
-          data = canvas.toDataURL 'image/png'
-          processPhotos data, styles[getIndex counter]
+      clearPopup()
+      createSpinner()
+
+      canvas = document.createElement('canvas')
     
-          return
+      canvas.width = width
+      canvas.height = height
+      canvas.getContext('2d').drawImage video, 0, 0, width, height
+      data = canvas.toDataURL 'image/png'
+      processPhotos data, styles[getIndex counter]
+    
+    openVortex = ->
+      recSetTimeout = (n) ->
+        if n < 0 then snapPicture()
     
         setTimeout( ->
           countdown.innerText = n
           port.postMessage("" + n)
-          doSetTimeout n-1
+          recSetTimeout n-1
         , 1000)
     
-      doSetTimeout timer
+      recSetTimeout timer
 
     video.addEventListener('click', (ev) ->
       ev.preventDefault()
-      takepicture()
+      openVortex()
     , false)
 
     previous.addEventListener('click', (ev) ->
