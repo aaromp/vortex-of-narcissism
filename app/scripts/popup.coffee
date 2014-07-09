@@ -74,7 +74,7 @@ readyStateCheckInterval = setInterval( ->
 
     createSpinner = ->
       spinner = document.createElement 'img'
-      spinner.setAttribute 'src', '../spinner.gif'
+      spinner.setAttribute 'src', '../images/spinner.gif'
       spinner.id = 'spinner'
       document.body.appendChild spinner
     
