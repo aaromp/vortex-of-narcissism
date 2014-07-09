@@ -8,4 +8,5 @@ chrome.runtime.onMessage.addListener (request, sender, sendResponse) ->
     for image in document.images
       image.setAttribute 'src', request.image
       image.className += request.filter
+    sendResponse({'done': true})
 

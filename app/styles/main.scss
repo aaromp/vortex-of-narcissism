@@ -11,6 +11,7 @@ canvas {
   height: 450px;
 }
 
+.normal {}
 .grayscale {
   -webkit-filter: grayscale(1);
   filter: grayscale(1);
@@ -51,4 +52,3 @@ canvas {
   -webkit-filter: drop-shadow(16px 16px 10px rgba(0,0,0,0.9));
   filter: drop-shadow(16px 16px 10px rgba(0,0,0,0.9));
 }
-.normal {}

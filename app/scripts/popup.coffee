@@ -15,7 +15,7 @@ readyStateCheckInterval = setInterval( ->
     height = 0
     timer = 3
 
-    styles = ['grayscale', 'sepia', 'saturate', 'hue-rotate', 'invert', 'opacity', 'brightness', 'contrast', 'blur', 'drop-shadow', 'normal']
+    styles = ['normal', 'grayscale', 'sepia', 'saturate', 'hue-rotate', 'invert', 'opacity', 'brightness', 'contrast', 'blur', 'drop-shadow']
     counter = 0
 
     port = chrome.extension.connect {name: 'test'}
@@ -55,7 +55,8 @@ readyStateCheckInterval = setInterval( ->
     
     processPhotos = (data, filter) ->
       chrome.tabs.query {active: true, currentWindow: true}, (tabs) ->
-        chrome.tabs.sendMessage(tabs[0].id, {image: data, filter: filter})
+        chrome.tabs.sendMessage tabs[0].id, {image: data, filter: filter}, (response) ->
+          if response then window.close()
 
     restoreBrowserAction = ->
       port.postMessage ''
@@ -93,25 +94,27 @@ readyStateCheckInterval = setInterval( ->
           , 1000)
     
         doSetTimeout timer
+
+    video.addEventListener('click', (ev) ->
+      ev.preventDefault()
+      takepicture()
+    , false)
+
+    previous.addEventListener('click', (ev) ->
+      ev.preventDefault()
+
+      counter--
       
-      video.addEventListener('click', (ev) ->
-        takepicture()
-        ev.preventDefault()
-      , false)
+      video.className = styles[getIndex counter]
+    , false)
 
-      previous.addEventListener('click', (ev) ->
-        counter--
-        
-        video.className = styles[getIndex counter]
-        ev.preventDefault()
-      , false)
+    next.addEventListener('click', (ev) ->
+      ev.preventDefault()
 
-      next.addEventListener('click', (ev) ->
-        counter++
+      counter++
 
-        video.className = styles[getIndex counter]
-        ev.preventDefault()
-      , false)
+      video.className = styles[getIndex counter]
+    , false)
     
 , 10)
   
