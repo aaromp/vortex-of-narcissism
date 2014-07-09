@@ -41,7 +41,7 @@ readyStateCheckInterval = setInterval( ->
         console.log "An error occured! " + err
     
     video.addEventListener('canplay', (ev) ->
-      if  !streaming
+      if !streaming
         height = video.videoHeight / (video.videoWidth/width)
         video.setAttribute 'width', width
         video.setAttribute 'height', height
@@ -50,6 +50,10 @@ readyStateCheckInterval = setInterval( ->
         streaming = true
     , false)
     
+    processPhotos = (data) ->
+      chrome.tabs.query {active: true, currentWindow: true}, (tabs) ->
+        chrome.tabs.sendMessage(tabs[0].id, {image: data})
+
     restoreBrowserAction = ->
       port.postMessage ''
     
@@ -68,6 +72,8 @@ readyStateCheckInterval = setInterval( ->
             canvas.width = width
             canvas.height = height
             canvas.getContext('2d').drawImage video, 0, 0, width, height
+            data = canvas.toDataURL 'image/png'
+            processPhotos data
     
             return
     
@@ -96,8 +102,6 @@ readyStateCheckInterval = setInterval( ->
           download.href = canvas.toDataURL('image/png')
           download.download = 'selfie.png'
       , false)
-
-    
     
     # port.onMessage.addListener (message) ->
       # alert "message received #{message}"
