@@ -30,9 +30,17 @@ canvas {
   -webkit-filter: saturate(8);
   filter: saturate(8);
 }
-.hue-rotate {
+.hue-rotate-90 {
   -webkit-filter: hue-rotate(90deg);
   filter: hue-rotate(90deg);
+}
+.hue-rotate-180 {
+  -webkit-filter: hue-rotate(180deg);
+  filter: hue-rotate(180deg);
+}
+.hue-rotate-270 {
+  -webkit-filter: hue-rotate(270deg);
+  filter: hue-rotate(270deg);
 }
 .invert {
   -webkit-filter: invert(.8);

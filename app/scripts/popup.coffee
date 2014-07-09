@@ -15,7 +15,7 @@ readyStateCheckInterval = setInterval( ->
     height = 0
     timer = 3
 
-    styles = ['normal', 'grayscale', 'sepia', 'saturate', 'hue-rotate', 'invert', 'opacity', 'brightness', 'contrast', 'blur']
+    styles = ['normal', 'grayscale', 'sepia', 'saturate', 'hue-rotate-90', 'hue-rotate-180', 'hue-rotate-270', 'invert', 'opacity', 'brightness', 'contrast', 'blur']
     counter = 0
 
     port = chrome.extension.connect {name: 'test'}
