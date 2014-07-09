@@ -8,12 +8,15 @@ readyStateCheckInterval = setInterval( ->
     streaming = false
     countdown    = document.querySelector '#countdown'
     video        = document.querySelector '#video'
-    canvas       = document.querySelector '#canvas'
-    download     = document.querySelector '#download'
+    previous     = document.querySelector '#previous'
+    next         = document.querySelector '#next'
     
     width = window.innerWidth
     height = 0
     timer = 3
+
+    styles = ['grayscale', 'sepia', 'saturate', 'hue-rotate', 'invert', 'opacity', 'brightness', 'contrast', 'blur', 'drop-shadow', 'normal']
+    counter = 0
 
     port = chrome.extension.connect {name: 'test'}
 
@@ -50,12 +53,17 @@ readyStateCheckInterval = setInterval( ->
         streaming = true
     , false)
     
-    processPhotos = (data) ->
+    processPhotos = (data, filter) ->
       chrome.tabs.query {active: true, currentWindow: true}, (tabs) ->
-        chrome.tabs.sendMessage(tabs[0].id, {image: data})
+        chrome.tabs.sendMessage(tabs[0].id, {image: data, filter: filter})
 
     restoreBrowserAction = ->
       port.postMessage ''
+
+    getIndex = (counter) ->
+      index = counter % styles.length
+      if counter < 0 then index = styles.length - (Math.abs counter % styles.length)
+      index
     
     takepicture = ->
         doSetTimeout = (n) ->
@@ -68,12 +76,13 @@ readyStateCheckInterval = setInterval( ->
             localMediaStream.stop()
     
             document.getElementById('video').remove()
+            canvas = document.createElement('canvas')
     
             canvas.width = width
             canvas.height = height
             canvas.getContext('2d').drawImage video, 0, 0, width, height
             data = canvas.toDataURL 'image/png'
-            processPhotos data
+            processPhotos data, styles[getIndex counter]
     
             return
     
@@ -89,22 +98,20 @@ readyStateCheckInterval = setInterval( ->
         takepicture()
         ev.preventDefault()
       , false)
-    
-      styles = ['grayscale', 'sepia', 'saturate', 'hue-rotate', 'invert', 'opacity', 'brightness', 'contrast', 'blur', 'drop-shadow', 'normal']
-      counter = 0
-      canvas.addEventListener('click', (ev) ->
-        canvas.className = styles[counter % styles.length]
-        counter++
+
+      previous.addEventListener('click', (ev) ->
+        counter--
+        
+        video.className = styles[getIndex counter]
         ev.preventDefault()
       , false)
-    
-      download.addEventListener('click', ->
-          download.href = canvas.toDataURL('image/png')
-          download.download = 'selfie.png'
+
+      next.addEventListener('click', (ev) ->
+        counter++
+
+        video.className = styles[getIndex counter]
+        ev.preventDefault()
       , false)
-    
-    # port.onMessage.addListener (message) ->
-      # alert "message received #{message}"
     
 , 10)
   

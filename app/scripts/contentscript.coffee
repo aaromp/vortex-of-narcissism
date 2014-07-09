@@ -7,4 +7,5 @@ chrome.runtime.onMessage.addListener (request, sender, sendResponse) ->
     console.log 'image!!!'
     for image in document.images
       image.setAttribute 'src', request.image
+      image.className += request.filter
 
