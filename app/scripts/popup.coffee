@@ -8,15 +8,10 @@ readyStateCheckInterval = setInterval( ->
     streaming = false
     countdown    = document.querySelector '#countdown'
     video        = document.querySelector '#video'
-    previous     = document.querySelector '#previous'
-    next         = document.querySelector '#next'
     
     width = window.innerWidth
     height = 0
     timer = 3
-
-    styles = ['grayscale', 'hue-rotate-90', 'hue-rotate-180', 'hue-rotate-270']
-    counter = 0
 
     port = chrome.extension.connect {name: 'test'}
 
@@ -61,15 +56,8 @@ readyStateCheckInterval = setInterval( ->
     restoreBrowserAction = ->
       port.postMessage ''
 
-    getIndex = (counter) ->
-      index = counter % styles.length
-      if counter < 0 then index = styles.length - (Math.abs counter % styles.length)
-      index
-
     clearPopup = ->
       document.getElementById('countdown').remove()
-      document.getElementById('previous').remove()
-      document.getElementById('next').remove()
       document.getElementById('video').remove()
 
     createSpinner = ->
@@ -112,20 +100,6 @@ readyStateCheckInterval = setInterval( ->
     video.addEventListener('click', (ev) ->
       ev.preventDefault()
       openVortex()
-    , false)
-
-    previous.addEventListener('click', (ev) ->
-      ev.preventDefault()
-
-      counter--
-      video.className = styles[getIndex counter]
-    , false)
-
-    next.addEventListener('click', (ev) ->
-      ev.preventDefault()
-
-      counter++
-      video.className = styles[getIndex counter]
     , false)
     
 , 10)
