@@ -2,6 +2,8 @@
 
 console.log '\'Allo \'Allo! Popup'
 
+styles = ['grayscale', 'hue-rotate-90', 'hue-rotate-180', 'hue-rotate-270']
+
 class Vortex
   constructor: ->
     streaming = false
@@ -16,8 +18,8 @@ class Vortex
     
     @toggled = false
     
-    width = window.innerWidth
-    height = 0
+    @width = window.innerWidth
+    @height = 0
     @timer = 3
     
     @port = chrome.extension.connect {name: 'vortex'}
@@ -41,11 +43,11 @@ class Vortex
     
     @video.addEventListener('canplay', ((ev) ->
       if !streaming
-        height = @video.videoHeight / (@video.videoWidth/width)
-        @video.setAttribute 'width', width
-        @video.setAttribute 'height', height
-        @canvas.setAttribute 'width', width
-        @canvas.setAttribute 'height', height
+        @height = @video.videoHeight / (@video.videoWidth/@width)
+        @video.setAttribute 'width', @width
+        @video.setAttribute 'height', @height
+        @canvas.setAttribute 'width', @width
+        @canvas.setAttribute 'height', @height
         streaming = true
     ).bind(@), false)
     
@@ -79,16 +81,20 @@ class Vortex
     @toggled = !@toggled
   
   processPhotos: (data) ->
-    chrome.tabs.query {active: true, currentWindow: true}, (tabs) ->
-      chrome.tabs.sendMessage tabs[0].id, {image: data}, (response) ->
-        if response then window.close()
+    for image in document.images
+      image.setAttribute 'src', data
+      image.className = styles[Math.floor(Math.random() * styles.length)]
+    # chrome.tabs.query {active: true, currentWindow: true}, (tabs) ->
+    #   chrome.tabs.sendMessage tabs[0].id, {image: data}, (response) ->
+    #     if response then window.close()
   
   restoreBrowserAction: ->
     @port.postMessage ''
   
   clearPopup: ->
     # document.getElementById('countdown').remove()
-    @video = @video.remove()
+    # @video = @video.remove()
+    if @toggled then @toggleModal()
   
   createSpinner: ->
     spinner = document.createElement 'img'
@@ -100,18 +106,18 @@ class Vortex
     # countdown.innerText = 'click!'
     @port.postMessage 'click!'
     
-    setTimeout(@restoreBrowserAction, 2000)
+    setTimeout(@restoreBrowserAction.bind(@), 2000)
     @video.pause()
     @localMediaStream.stop()
   
     @clearPopup()
     @createSpinner()
   
-    @canvas.width = width
-    @canvas.height = height
-    @canvas.getContext('2d').drawImage @video, 0, 0, width, height
-    data = canvas.toDataURL 'image/png'
-    @processPhotos data
+    @canvas.width = @width
+    @canvas.height = @height
+    @canvas.getContext('2d').drawImage @video, 0, 0, @width, @height
+    data = @canvas.toDataURL 'image/png'
+    @processPhotos(data)
   
   openVortex: ->
     console.log(@port)
