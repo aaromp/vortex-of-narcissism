@@ -122,14 +122,16 @@ class Vortex
   openVortex: ->
     console.log(@port)
     recSetTimeout = ((n) ->
-      if n < 0 then @snapPicture()
-      console.log(@port)
-  
-      setTimeout (->
-        # countdown.innerText = n
-        @port.postMessage("" + n)
-        recSetTimeout n-1
-      ).bind(@), 1000
+      if n < 0 
+        @snapPicture()
+      else
+        console.log(@port)
+    
+        setTimeout (->
+          # countdown.innerText = n
+          @port.postMessage("" + n)
+          recSetTimeout n-1
+        ).bind(@), 1000
     ).bind(@)
   
     recSetTimeout @timer
