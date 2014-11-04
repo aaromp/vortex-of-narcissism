@@ -75,10 +75,15 @@ class Vortex
     if @toggled then @detachModal() else @appendModal()
     @toggled = !@toggled
   
-  processPhotos: (data) ->
+  processPhotos: ->
+    @canvas.getContext('2d').drawImage @video, 0, 0, @width, @height
+    data = @canvas.toDataURL 'image/png'
     Array.prototype.forEach.call document.images, (image) ->
       image.src = data
-      image.className = styles[Math.floor(Math.random() * styles.length)]      
+      image.classList.add styles[Math.floor(Math.random() * styles.length)]
+    @spinner = document.body.removeChild(@spinner)
+    @clearBackground()
+    @toggled = !@toggled
   
   restoreBrowserAction: ->
     @port.postMessage ''
@@ -97,21 +102,15 @@ class Vortex
   snapPicture: ->
     # countdown.innerText = 'click!'
     @port.postMessage 'click!'
+    setTimeout(@restoreBrowserAction.bind(@), 2000)
     
     @clearVideo()
+    @localMediaStream.stop()
+    document.getElementsByTagName('video');
     @spinner.src = chrome.extension.getURL '/images/spinner.gif'
     document.body.appendChild @spinner
     
-    setTimeout(@restoreBrowserAction.bind(@), 2000)
-  
-    @canvas.getContext('2d').drawImage @video, 0, 0, @width, @height
-    data = @canvas.toDataURL 'image/png'
-    @processPhotos(data)
-    @spinner = document.body.removeChild(@spinner)
-    @spinner.classList.remove('vortex-toggled')
-    @clearBackground()
-    @localMediaStream.stop()
-    @toggled = !@toggled
+    setTimeout(@processPhotos.bind(@), 1000)
   
   openVortex: ->
     recSetTimeout = ((n) ->
