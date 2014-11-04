@@ -15,7 +15,7 @@ toggled = false
 
 chrome.browserAction.onClicked.addListener (tab) ->
   console.log('sending click from bs')
-  chrome.tabs.sendMessage tab.id, {modal: true}, (response) ->
+  chrome.tabs.sendMessage tab.id, {modal: toggled}, (response) ->
     toggled = response.modal
 
 chrome.runtime.onMessage.addListener (message, sender, sendResponse) ->

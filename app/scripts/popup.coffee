@@ -6,23 +6,23 @@ class Vortex
   constructor: ->
     streaming = false
 
-    countdown    = document.querySelector '#countdown'
+    # countdown    = document.querySelector '#countdown'
     @video       = document.createElement('video')
-    canvas       = document.createElement('canvas')
-    background   = document.createElement('div');
+    @canvas       = document.createElement('canvas')
+    @background   = document.createElement('div');
 
-    background.classList.add('vortex-background');
+    @background.classList.add('vortex-background');
     @video.classList.add('vortex-of-narcissism')
     
-    toggled = false
+    @toggled = false
     
     width = window.innerWidth
     height = 0
-    timer = 3
+    @timer = 3
     
-    port = chrome.extension.connect {name: 'test'}
+    @port = chrome.extension.connect {name: 'vortex'}
     
-    localMediaStream = null
+    @localMediaStream = null
     
     navigator.getMedia = navigator.getUserMedia ||
                          navigator.webkitGetUserMedia
@@ -31,11 +31,10 @@ class Vortex
       video: true,
       audio: false,
       ((stream) ->
-        localMediaStream = stream
+        @localMediaStream = stream
         vendorURL = window.URL || window.webkitURL
         @video.src = vendorURL.createObjectURL stream
-        console.log(@video);
-        @video.play()
+        # @video.play()
       ).bind(@),
       (err) ->
         console.log "An error occured! " + err
@@ -43,20 +42,33 @@ class Vortex
     @video.addEventListener('canplay', ((ev) ->
       if !streaming
         height = @video.videoHeight / (@video.videoWidth/width)
-        canvas.setAttribute 'width', width
-        canvas.setAttribute 'height', height
+        @video.setAttribute 'width', width
+        @video.setAttribute 'height', height
+        @canvas.setAttribute 'width', width
+        @canvas.setAttribute 'height', height
         streaming = true
     ).bind(@), false)
     
-    @video.addEventListener('click', (ev) ->
+    @video.addEventListener('click', ((ev) ->
       ev.preventDefault()
-      openVortex()
-    , false)
+      @openVortex()
+    ).bind(@), false)
 
-  toggleModal: (message) ->
+  appendModal: ->
+    console.log('append')
+    @video.play()
     document.body.appendChild(@video)
-    # if !message.modal then appendModal() else detachModal()
-    toggled = !message.modal
+    document.body.appendChild(@background)
+
+  detachModal: ->
+    console.log('detach')
+    @video = document.body.removeChild(@video)
+    @background = document.body.removeChild(@background)
+
+  toggleModal: ->
+    console.log(@toggled)
+    if @toggled then @detachModal() else @appendModal()
+    @toggled = !@toggled
   
   processPhotos: (data) ->
     chrome.tabs.query {active: true, currentWindow: true}, (tabs) ->
@@ -64,11 +76,11 @@ class Vortex
         if response then window.close()
   
   restoreBrowserAction: ->
-    port.postMessage ''
+    @port.postMessage ''
   
   clearPopup: ->
-    document.getElementById('countdown').remove()
-    document.getElementById('video').remove()
+    # document.getElementById('countdown').remove()
+    @video = @video.remove()
   
   createSpinner: ->
     spinner = document.createElement 'img'
@@ -77,32 +89,35 @@ class Vortex
     document.body.appendChild spinner
   
   snapPicture: ->
-    countdown.innerText = 'click!'
-    port.postMessage 'click!'
+    # countdown.innerText = 'click!'
+    @port.postMessage 'click!'
     
-    setTimeout(restoreBrowserAction, 2000)
+    setTimeout(@restoreBrowserAction, 2000)
     @video.pause()
-    localMediaStream.stop()
+    @localMediaStream.stop()
   
-    clearPopup()
-    createSpinner()
+    @clearPopup()
+    @createSpinner()
   
-    canvas.width = width
-    canvas.height = height
-    canvas.getContext('2d').drawImage @video, 0, 0, width, height
+    @canvas.width = width
+    @canvas.height = height
+    @canvas.getContext('2d').drawImage @video, 0, 0, width, height
     data = canvas.toDataURL 'image/png'
-    processPhotos data
+    @processPhotos data
   
   openVortex: ->
-    recSetTimeout = (n) ->
-      if n < 0 then snapPicture()
+    console.log(@port)
+    recSetTimeout = ((n) ->
+      if n < 0 then @snapPicture()
+      console.log(@port)
   
-      setTimeout( ->
-        countdown.innerText = n
-        port.postMessage("" + n)
+      setTimeout (->
+        # countdown.innerText = n
+        @port.postMessage("" + n)
         recSetTimeout n-1
-      , 1000)
+      ).bind(@), 1000
+    ).bind(@)
   
-    recSetTimeout timer
+    recSetTimeout @timer
 
 @vortex = new Vortex()
