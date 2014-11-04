@@ -17,18 +17,22 @@ canvas {
   -webkit-animation: spin 1s infinite linear;
 }
 
-.normal {}
+.vortex-of-narcissism {
+  height: 500px;
+  width: 614px;
+
+  margin: auto;
+  position: fixed;
+  z-index: 9999999;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
 .grayscale {
   -webkit-filter: grayscale(1);
   filter: grayscale(1);
-}
-.sepia {
-  -webkit-filter: sepia(1);
-  filter: sepia(1);
-}
-.saturate {
-  -webkit-filter: saturate(8);
-  filter: saturate(8);
 }
 .hue-rotate-90 {
   -webkit-filter: hue-rotate(90deg);
@@ -41,20 +45,4 @@ canvas {
 .hue-rotate-270 {
   -webkit-filter: hue-rotate(270deg);
   filter: hue-rotate(270deg);
-}
-.invert {
-  -webkit-filter: invert(.8);
-  filter: invert(.8);
-}
-.brightness {
-  -webkit-filter: brightness(3);
-  filter: brightness(3);
-}
-.contrast {
-  -webkit-filter: contrast(4);
-  filter: contrast(4);
-}
-.blur {
-  -webkit-filter: blur(5px);
-  filter: blur(5px);
 }
