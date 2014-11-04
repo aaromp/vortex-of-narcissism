@@ -18,16 +18,24 @@ canvas {
 }
 
 .vortex-of-narcissism {
-  height: 500px;
-  width: 614px;
+  width: 33%;
 
   margin: auto;
   position: fixed;
-  z-index: 9999999;
+  z-index: 10000000;
   top: 0;
   left: 0;
   bottom: 0;
   right: 0;
+
+  -webkit-transform: scale(0.8);
+  opacity: 0.33;
+}
+
+.vortex-of-narcissism.vortex-toggled  {
+  -webkit-transition: all 0.4s ease;
+  -webkit-transform: scale(1);
+  opacity: 1;
 }
 
 .vortex-focus, .vortex-blur {
