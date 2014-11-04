@@ -27,6 +27,15 @@ canvas {
   left: 0;
   bottom: 0;
   right: 0;
+
+  -webkit-transform: scale(0.8);
+  opacity: 0.33;
+}
+
+.vortex-of-narcissism.vortex-toggled  {
+  -webkit-transition: all 0.4s ease;
+  -webkit-transform: scale(1);
+  opacity: 1;
 }
 
 .vortex-background {
@@ -40,6 +49,19 @@ canvas {
   z-index: 9999999;
 }
 
+.vortex-focus, .vortex-blur {
+  -webkit-transition: all 0.4s ease;
+}
+
+.vortex-focus {
+  -webkit-filter: none;
+  -webkit-transform: scale(1)
+}
+
+.vortex-blur {
+  -webkit-filter: blur(2px) grayscale(50%);
+  -webkit-transform: scale(0.9)
+}
 .grayscale {
   -webkit-filter: grayscale(1);
   filter: grayscale(1);

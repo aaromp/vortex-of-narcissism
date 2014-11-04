@@ -56,12 +56,20 @@ class Vortex
 
   appendModal: ->
     console.log('append')
+    Array.prototype.forEach.call document.body.children, (child) ->
+      child.classList.add 'vortex-blur'
     @video.play()
     document.body.appendChild(@video)
+    window.getComputedStyle(@video).transition; # make sure transform is loaded
+    @video.classList.add('vortex-toggled')
     document.body.appendChild(@background)
 
   detachModal: ->
     console.log('detach')
+    Array.prototype.forEach.call document.body.children, (child) ->
+      child.classList.remove 'vortex-blur'
+    @video.pause()
+    @video.classList.remove('vortex-toggled')
     @video = document.body.removeChild(@video)
     @background = document.body.removeChild(@background)
 
