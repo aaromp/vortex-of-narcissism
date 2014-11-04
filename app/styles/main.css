@@ -69,12 +69,6 @@ canvas {
   filter: invert(0.8);
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/aaronward\/Documents\/vortex-of-narcissism\/app\/styles\/main\.scss}line{font-family:\0000349}}
-.opacity {
-  -webkit-filter: opacity(0.2);
-  filter: opacity(0.2);
-}
-
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/aaronward\/Documents\/vortex-of-narcissism\/app\/styles\/main\.scss}line{font-family:\0000353}}
 .brightness {
   -webkit-filter: brightness(3);

@@ -15,7 +15,7 @@ readyStateCheckInterval = setInterval( ->
     height = 0
     timer = 3
 
-    styles = ['normal', 'grayscale', 'sepia', 'saturate', 'hue-rotate-90', 'hue-rotate-180', 'hue-rotate-270', 'invert', 'opacity', 'brightness', 'contrast', 'blur']
+    styles = ['grayscale', 'hue-rotate-90', 'hue-rotate-180', 'hue-rotate-270']
     counter = 0
 
     port = chrome.extension.connect {name: 'test'}
@@ -53,9 +53,9 @@ readyStateCheckInterval = setInterval( ->
         streaming = true
     , false)
     
-    processPhotos = (data, filter) ->
+    processPhotos = (data) ->
       chrome.tabs.query {active: true, currentWindow: true}, (tabs) ->
-        chrome.tabs.sendMessage tabs[0].id, {image: data, filter: filter}, (response) ->
+        chrome.tabs.sendMessage tabs[0].id, {image: data}, (response) ->
           if response then window.close()
 
     restoreBrowserAction = ->
@@ -95,7 +95,7 @@ readyStateCheckInterval = setInterval( ->
       canvas.height = height
       canvas.getContext('2d').drawImage video, 0, 0, width, height
       data = canvas.toDataURL 'image/png'
-      processPhotos data, styles[getIndex counter]
+      processPhotos data
     
     openVortex = ->
       recSetTimeout = (n) ->
