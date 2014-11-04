@@ -9,13 +9,17 @@ canvas {
 
 @-webkit-keyframes spin { to { -webkit-transform: rotate(360deg); } }
 
-#spinner {
+.vortex-spinner {
   -webkit-animation: spin 1s infinite linear;
 }
 
 .vortex-of-narcissism {
-  width: 33%;
+  -webkit-transform: scale(0.8);
+  opacity: 0.33;
+}
 
+.vortex-of-narcissism, .vortex-spinner {
+  width: 33%;
   margin: auto;
   position: fixed;
   z-index: 10000000;
@@ -23,9 +27,6 @@ canvas {
   left: 0;
   bottom: 0;
   right: 0;
-
-  -webkit-transform: scale(0.8);
-  opacity: 0.33;
 }
 
 .vortex-of-narcissism.vortex-toggled  {

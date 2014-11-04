@@ -6,25 +6,24 @@ styles = ['grayscale', 'hue-rotate-90', 'hue-rotate-180', 'hue-rotate-270']
 
 class Vortex
   constructor: ->
-    streaming = false
-
     # countdown    = document.querySelector '#countdown'
-    @video       = document.createElement('video')
-    @canvas       = document.createElement('canvas')
-    @background   = document.createElement('div');
+    @video        = document.createElement 'video'
+    @canvas       = document.createElement 'canvas'
+    @spinner      = document.createElement 'img'
+    @background   = document.createElement 'div'
 
-    @background.classList.add('vortex-background');
-    @video.classList.add('vortex-of-narcissism')
+    @video.classList.add 'vortex-of-narcissism'
+    @spinner.classList.add 'vortex-spinner'
+    @background.classList.add 'vortex-background'
     
-    @toggled = false
-    
+    @timer = 3
     @width = window.innerWidth
     @height = 0
-    @timer = 3
+    @toggled = false
+    streaming = false
+    @localMediaStream = null
     
     @port = chrome.extension.connect {name: 'vortex'}
-    
-    @localMediaStream = null
     
     navigator.getMedia = navigator.getUserMedia ||
                          navigator.webkitGetUserMedia
@@ -68,12 +67,8 @@ class Vortex
 
   detachModal: ->
     console.log('detach')
-    Array.prototype.forEach.call document.body.children, (child) ->
-      child.classList.remove 'vortex-blur'
-    @video.pause()
-    @video.classList.remove('vortex-toggled')
-    @video = document.body.removeChild(@video)
-    @background = document.body.removeChild(@background)
+    @clearVideo()
+    @clearBackground()
 
   toggleModal: ->
     console.log(@toggled)
@@ -81,51 +76,49 @@ class Vortex
     @toggled = !@toggled
   
   processPhotos: (data) ->
-    for image in document.images
-      image.setAttribute 'src', data
-      image.className = styles[Math.floor(Math.random() * styles.length)]
-    # chrome.tabs.query {active: true, currentWindow: true}, (tabs) ->
-    #   chrome.tabs.sendMessage tabs[0].id, {image: data}, (response) ->
-    #     if response then window.close()
+    Array.prototype.forEach.call document.images, (image) ->
+      image.src = data
+      image.className = styles[Math.floor(Math.random() * styles.length)]      
   
   restoreBrowserAction: ->
     @port.postMessage ''
   
-  clearPopup: ->
-    # document.getElementById('countdown').remove()
-    # @video = @video.remove()
-    if @toggled then @toggleModal()
-  
-  createSpinner: ->
-    spinner = document.createElement 'img'
-    spinner.setAttribute 'src', '../images/spinner.gif'
-    spinner.id = 'spinner'
-    document.body.appendChild spinner
+  clearVideo: ->
+    console.log('this video', @video)
+    @video.pause()
+    @video.classList.remove('vortex-toggled')
+    @video = document.body.removeChild(@video)
+
+  clearBackground: ->
+    Array.prototype.forEach.call document.body.children, (child) ->
+      child.classList.remove 'vortex-blur'
+    @background = document.body.removeChild(@background)
   
   snapPicture: ->
     # countdown.innerText = 'click!'
     @port.postMessage 'click!'
     
+    @clearVideo()
+    @spinner.src = chrome.extension.getURL '/images/spinner.gif'
+    document.body.appendChild @spinner
+    
     setTimeout(@restoreBrowserAction.bind(@), 2000)
-    @video.pause()
-    @localMediaStream.stop()
   
-    @clearPopup()
-    @createSpinner()
-  
-    @canvas.width = @width
-    @canvas.height = @height
     @canvas.getContext('2d').drawImage @video, 0, 0, @width, @height
     data = @canvas.toDataURL 'image/png'
     @processPhotos(data)
+    @spinner = document.body.removeChild(@spinner)
+    @spinner.classList.remove('vortex-toggled')
+    @clearBackground()
+    @localMediaStream.stop()
+    @toggled = !@toggled
   
   openVortex: ->
-    console.log(@port)
     recSetTimeout = ((n) ->
-      if n < 0 
+      if n < 0
         @snapPicture()
       else
-        console.log(@port)
+        console.log(n)
     
         setTimeout (->
           # countdown.innerText = n

@@ -41,5 +41,8 @@
     ],
     "permissions": [
         "tabs"
+    ],
+    "web_accessible_resources": [
+        "images/spinner.gif"
     ]
 }
